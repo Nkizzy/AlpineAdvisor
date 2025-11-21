@@ -5,6 +5,7 @@ import { Mountain, Award, Target, ArrowRight, CheckSquare, FileText, Sparkles } 
 
 const Index = () => {
   const navigate = useNavigate();
+  const basePath = import.meta.env.BASE_URL;
 
   const features = [
     {
@@ -51,7 +52,7 @@ const Index = () => {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/images/landscape.jpg)", backgroundPosition: "center 60%" }}
+          style={{ backgroundImage: `url(${basePath}images/landscape.jpg)`, backgroundPosition: "center 60%" }}
         >
           <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(255,255,255,0.3) 80%, hsl(var(--background)) 100%)" }} />
         </div>
@@ -160,7 +161,7 @@ const Index = () => {
             <div className="relative animate-fade-in max-w-sm mx-auto">
               <div className="relative rounded-lg overflow-hidden shadow-medium aspect-[3/4]">
                 <img
-                  src="/images/skis.jpeg"
+                  src={`${basePath}images/skis.jpeg`}
                   alt="Skis"
                   className="w-full h-full object-cover object-[center_65%]"
                 />
