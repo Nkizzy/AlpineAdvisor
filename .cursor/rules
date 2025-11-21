@@ -1,0 +1,64 @@
+Project: Winter Gear Assistant (Vite + React + Tailwind)
+
+Purpose
+- Help users find the right winter sport gear by answering questions about their skiing style and personal attributes.
+- Initial focus: skis and ski boots. Future: snowboards and snowboard boots.
+- Design for broad hosting compatibility (static first). Must run on desktop and mobile.
+
+Non‑negotiable Principles
+- Hosting portability: Keep the app static (no required server). Any optional backend must be behind clean interfaces and be replaceable.
+- Mobile responsiveness: Every new page/component must be responsive and keyboard accessible.
+- Performance: Fast first load and smooth interactions; avoid unnecessary bundle bloat.
+- Privacy by default: Do not collect PII without explicit consent; no tracking without opt‑in.
+- Accessibility: Aim for WCAG AA. Use semantic HTML, focus states, ARIA where needed.
+
+Tech Guardrails
+- Stack: Vite, React, TypeScript, Tailwind CSS, React Router.
+- Routing: Client-side routes under `src/pages`. Avoid hard-coded absolute URLs; use relative paths.
+- Environment: Do not rely on platform-specific features. Configuration via Vite envs and safe defaults.
+- Build portability: Support hosting from a subpath by honoring a configurable base path.
+- State/data: Keep quiz logic client-side. If remote data is introduced, add a stubbed interface first.
+
+Quiz/Product Scope (MVP)
+- Covers skis and ski boots recommendations.
+- Questions include: ability level, terrain preference, speed, height, weight, boot size/last, stance comfort, goals.
+- Deterministic scoring: map answers to attributes (e.g., flex, width, length range) and produce recommendations with rationale.
+- Results page shows 3–5 matches with why-it-fits notes. Include hooks for adding affiliate product links later.
+
+Future: Affiliate Expansion
+- Abstract recommendation entities: { id, title, category, specs, rationale, imageUrl, productUrls[] }.
+- Do not hard-code vendor logic. Implement provider adapters that can be swapped (e.g., `AffiliateProvider` interface).
+- Track outbound clicks only with explicit consent. Respect DNT and user preferences.
+
+Code Quality
+- TypeScript: Strong typing for quiz models, scoring, and recommendation outputs.
+- Components: Small, composable, headless where possible. UI in `src/components/ui` where shared.
+- Styling: Tailwind utilities; avoid inline styles unless trivial.
+- Tests (when added): Focus on scoring and mapping logic.
+
+Design Guidelines
+- Color scheme: Use blues, teals, and cool tones that match the winter/snow theme. Do NOT use orange or warm orange tones anywhere in the design. Accent colors should be teal/cyan (HSL ~195-200) to complement the blue primary theme.
+
+SEO / Meta
+- Update page title/description per route. Provide favicon and social images without third-party branding.
+- Keep metadata local or configurable.
+
+Operational Rules for Cursor
+- **CRITICAL: Always ask for clarification and additional details when implementing new features, but ask questions incrementally (a little at a time) rather than overwhelming with many questions at once.** Start with the most important or foundational questions first, then ask follow-up questions as needed. Do not make assumptions - ask questions to ensure the best understanding of what is wanted before starting implementation.
+- Always keep this file up to date as development progresses. When adding routes, features, or changing architecture, update this document in the same PR.
+- Prefer edits that maintain hosting portability and mobile responsiveness.
+- When introducing a dependency, justify it in the PR description and confirm it doesn't lock hosting to a single platform.
+- Before merging, verify the app builds with `npm run build` and serves correctly from a subpath when `VITE_BASE_PATH` is set.
+
+Implementation Notes
+- Base path: Use `VITE_BASE_PATH` (fallback `/`) and wire it into Vite config.
+- Assets: Serve from relative paths. Put icons/images in `public/` or import assets via Vite.
+- Results: Keep a clear seam to attach affiliate product data later without refactoring core quiz logic.
+
+Checklists (apply to every PR)
+- [ ] Mobile/responsive check (Chrome dev tools or similar)
+- [ ] Keyboard navigation and focus states
+- [ ] No absolute hard-coded origins; subpath-safe links/assets
+- [ ] Bundle size sanity (avoid needless large deps)
+- [ ] `.cursor/rules` updated if scope/structure changed
+
