@@ -1,0 +1,522 @@
+{
+  "_documentation": {
+    "description": "Ski product data for Alpine Advisor database",
+    "instructions": "Add your ski products to the 'skis' array below. Use the attribute values listed in this documentation section.",
+    "attributeValues": {
+      "skillLevel": {
+        "description": "Required - Skill level of the ski",
+        "values": ["Beginner", "Intermediate", "Advanced", "Expert"]
+      },
+      "terrain": {
+        "description": "Required - Can be a single value or array for multiple terrain types",
+        "values": ["All-Mountain", "On-Piste", "Powder", "Park / Freestyle"],
+        "note": "You can select multiple terrain types: [\"All-Mountain\", \"Powder\"]"
+      },
+      "flexProfile": {
+        "description": "Required - Flex characteristics of the ski",
+        "values": ["Playful / Soft", "Stiff / Damp", "Buttery / Jib", "Stiff / Jumps", "Medium / Forgiving"],
+        "note": "Use 'Buttery / Jib' or 'Stiff / Jumps' for park skis, others for regular skis"
+      },
+      "turnStyle": {
+        "description": "Required - Turn characteristics",
+        "values": ["Short & Quick", "Long & Fast"]
+      },
+      "skiFeature": {
+        "description": "Optional - Only for park/freestyle skis",
+        "values": ["True Twin", "Directional Twin", null],
+        "note": "Set to null for non-park skis. Use 'True Twin' for pure park skis, 'Directional Twin' for hybrid all-mountain/park skis"
+      }
+    },
+    "fieldDescriptions": {
+      "brand": "Manufacturer name (e.g., 'Nordica', 'Rossignol')",
+      "model": "Model name (e.g., 'Enforcer 100', 'Black Ops 98')",
+      "year": "Model year (e.g., 2024)",
+      "gender": "Target gender: 'Men's/Unisex' or 'Women's'",
+      "waistWidth": "Width in millimeters at the waist (e.g., 88.0, 94.0, 100.0)",
+      "msrp": "Manufacturer's Suggested Retail Price (e.g., 699.99)",
+      "imageUrl": "Path to product image (e.g., '/images/nordica-enforcer-100.jpg')"
+    }
+  },
+  "skis": [
+    {
+      "brand": "J Skis",
+      "model": "The Allplay",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 97.0,
+      "msrp": 779.00,
+      "imageUrl": "/images/j-skis-allplay.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["All-Mountain", "Park / Freestyle"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "Kästle",
+      "model": "FX96 Ti",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 96.0,
+      "msrp": 1099.99,
+      "imageUrl": "/images/kastle-fx96-ti.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["All-Mountain", "Powder"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Blizzard",
+      "model": "Anomaly 94",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 94.0,
+      "msrp": 799.99,
+      "imageUrl": "/images/blizzard-anomaly-94.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["All-Mountain", "On-Piste"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Moment",
+      "model": "Wildcat 101",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 101.0,
+      "msrp": 849.00,
+      "imageUrl": "/images/moment-wildcat-101.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["All-Mountain", "Powder", "Park / Freestyle"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "Line",
+      "model": "Chronic 94",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 94.0,
+      "msrp": 599.99,
+      "imageUrl": "/images/line-chronic-94.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["Park / Freestyle"],
+        "flexProfile": "Buttery / Jib",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "True Twin"
+      }
+    },
+    {
+      "brand": "Atomic",
+      "model": "Bent 110",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 110.0,
+      "msrp": 749.99,
+      "imageUrl": "/images/atomic-bent-110.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["Powder", "All-Mountain"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Blizzard",
+      "model": "Cochise 106",
+      "year": 2024,
+      "gender": "Men's/Unisex",
+      "waistWidth": 106.0,
+      "msrp": 849.99,
+      "imageUrl": "/images/blizzard-cochise-106.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["Powder", "All-Mountain"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Völkl",
+      "model": "Deacon 72 Master",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 72.0,
+      "msrp": 1199.99,
+      "imageUrl": "/images/volkl-deacon-72.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["On-Piste"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Salomon",
+      "model": "QST 92",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 92.0,
+      "msrp": 649.99,
+      "imageUrl": "/images/salomon-qst-92.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["All-Mountain"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "K2",
+      "model": "Mindbender 85",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 85.0,
+      "msrp": 499.99,
+      "imageUrl": "/images/k2-mindbender-85.jpg",
+      "attributes": {
+        "skillLevel": "Beginner",
+        "terrain": ["All-Mountain", "On-Piste"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Faction",
+      "model": "Prodigy 1",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 88.0,
+      "msrp": 549.99,
+      "imageUrl": "/images/faction-prodigy-1.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["Park / Freestyle", "All-Mountain"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "Rossignol",
+      "model": "Experience 82 Ti",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 82.0,
+      "msrp": 799.99,
+      "imageUrl": "/images/rossignol-experience-82-ti.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["On-Piste", "All-Mountain"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Icelantic",
+      "model": "Nomad 95",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 95.0,
+      "msrp": 779.00,
+      "imageUrl": "/images/icelantic-nomad-95.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["All-Mountain", "Park / Freestyle"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "DPS",
+      "model": "Kaizen 105",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 105.0,
+      "msrp": 1299.00,
+      "imageUrl": "/images/dps-kaizen-105.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["All-Mountain", "Powder"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "K2",
+      "model": "Reckoner 102",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 102.0,
+      "msrp": 649.99,
+      "imageUrl": "/images/k2-reckoner-102.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["All-Mountain", "Powder", "Park / Freestyle"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "Black Crows",
+      "model": "Corvus",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 107.0,
+      "msrp": 949.95,
+      "imageUrl": "/images/black-crows-corvus.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["Powder", "All-Mountain"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Elan",
+      "model": "Ripstick 88",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 88.0,
+      "msrp": 699.99,
+      "imageUrl": "/images/elan-ripstick-88.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["All-Mountain", "On-Piste"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Nordica",
+      "model": "Enforcer 110 Free",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 110.0,
+      "msrp": 899.99,
+      "imageUrl": "/images/nordica-enforcer-110.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["Powder", "All-Mountain"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Atomic",
+      "model": "Punx 9",
+      "year": 2025,
+      "gender": "Men's/Unisex",
+      "waistWidth": 84.0,
+      "msrp": 599.99,
+      "imageUrl": "/images/atomic-punx-9.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["Park / Freestyle"],
+        "flexProfile": "Stiff / Jumps",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "True Twin"
+      }
+    },
+    {
+      "brand": "K2",
+      "model": "Mindbender 85 W",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 85.0,
+      "msrp": 499.99,
+      "imageUrl": "/images/k2-mindbender-85-w.jpg",
+      "attributes": {
+        "skillLevel": "Beginner",
+        "terrain": ["All-Mountain", "On-Piste"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Elan",
+      "model": "Ripstick 94 W",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 94.0,
+      "msrp": 699.99,
+      "imageUrl": "/images/elan-ripstick-94-w.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["All-Mountain", "Powder"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Völkl",
+      "model": "Secret 96",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 96.0,
+      "msrp": 799.99,
+      "imageUrl": "/images/volkl-secret-96.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["All-Mountain", "Powder"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Salomon",
+      "model": "QST Stella 106",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 106.0,
+      "msrp": 849.99,
+      "imageUrl": "/images/salomon-qst-stella-106.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["Powder", "All-Mountain"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Head",
+      "model": "Supershape e-Speed W",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 78.0,
+      "msrp": 999.99,
+      "imageUrl": "/images/head-supershape-e-speed-w.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["On-Piste"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Faction",
+      "model": "Prodigy 2X",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 98.0,
+      "msrp": 649.99,
+      "imageUrl": "/images/faction-prodigy-2x.jpg",
+      "attributes": {
+        "skillLevel": "Intermediate",
+        "terrain": ["All-Mountain", "Park / Freestyle"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "Rossignol",
+      "model": "Rallybird 102",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 102.0,
+      "msrp": 799.99,
+      "imageUrl": "/images/rossignol-rallybird-102.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["Powder", "All-Mountain"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Icelantic",
+      "model": "Nia Pro 105",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 105.0,
+      "msrp": 879.00,
+      "imageUrl": "/images/icelantic-nia-pro-105.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["Powder","All-Mountain"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Armada",
+      "model": "ARW 84",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 84.0,
+      "msrp": 399.99,
+      "imageUrl": "/images/armada-arw-84.jpg",
+      "attributes": {
+        "skillLevel": "Beginner",
+        "terrain": ["All-Mountain", "Park / Freestyle"],
+        "flexProfile": "Playful / Soft",
+        "turnStyle": "Short & Quick",
+        "skiFeature": "Directional Twin"
+      }
+    },
+    {
+      "brand": "Kästle",
+      "model": "FX96 W",
+      "year": 2025,
+      "gender": "Women's",
+      "waistWidth": 96.0,
+      "msrp": 999.99,
+      "imageUrl": "/images/kastle-fx96-w.jpg",
+      "attributes": {
+        "skillLevel": "Expert",
+        "terrain": ["All-Mountain", "Powder"],
+        "flexProfile": "Stiff / Damp",
+        "turnStyle": "Long / Fast",
+        "skiFeature": null
+      }
+    },
+    {
+      "brand": "Blizzard",
+      "model": "Hustle 9",
+      "year": 2024,
+      "gender": "Men's/Unisex",
+      "waistWidth": 94.0,
+      "msrp": 749.99,
+      "imageUrl": "/images/blizzard-hustle-9.jpg",
+      "attributes": {
+        "skillLevel": "Advanced",
+        "terrain": ["All-Mountain", "Powder"],
+        "flexProfile": "Medium / Forgiving",
+        "turnStyle": "Short & Quick",
+        "skiFeature": null
+      }
+    }
+  ]
+}

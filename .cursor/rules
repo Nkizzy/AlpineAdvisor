@@ -25,10 +25,155 @@ Quiz/Product Scope (MVP)
 - Deterministic scoring: map answers to attributes (e.g., flex, width, length range) and produce recommendations with rationale.
 - Results page shows 3–5 matches with why-it-fits notes. Include hooks for adding affiliate product links later.
 
+Quiz Logic (Current Implementation - Skis Only)
+- Question 1 (Skill Level): Based on trail type (Greens, Blues, Blacks, Double-blacks) → maps to skill tags
+  - Works for ALL ski types including park skis (park skis are tagged with appropriate skill levels in database)
+- Question 2 (Where do you plan to ski?): **MULTI-SELECT CHECKBOX** - Core question allowing hybrid selections
+  - Options: "All-Mountain", "On-Piste / Groomed", "Powder / Off-Piste", "Park / Freestyle"
+  - Users can select multiple options (e.g., "All-Mountain" AND "Park / Freestyle" for hybrid skis)
+  - This is the critical question that enables hybrid style recommendations
+- Question 3 (Skiing Style): Based on turn preference (e.g., "Powerful & Fast" vs. "Quick & Playful" vs. "Easy & Forgiving") → maps to flex and turn style tags
+- Question 4 (Gender): "Men's/Unisex" or "Women's"
+- Question 5 (Budget): Optional MSRP range
+
+Note: Sizing (length) and DIN settings are handled by a separate calculator based on height/weight/etc., NOT in the main recommendation database.
+
+DIN Settings Calculator Requirements:
+- MUST include a legal disclaimer after displaying DIN settings results
+- Disclaimer text: "⚠️ CRITICAL DISCLAIMER: The following is an estimate for educational purposes ONLY. It is NOT a substitute for professional advice. Ski binding settings must be done by a certified technician who will test the release function of your specific boot-binding system. Never ski on bindings you have set yourself."
+- This disclaimer is legally required to ensure users do not take the DIN estimate as untested advice
+
+Quiz Answer to Database Query Mapping:
+The quiz answers map to database queries using a "wishlist" approach: collect all desired Attribute_IDs and numerical filters, then COUNT matches per ski to create a Match_Score.
+
+Question 1: Skill Level
+- Provides: One Attribute Tag (added to wishlist)
+- Attribute Type: Skill_Level
+- Example Values: 'Beginner', 'Intermediate', 'Advanced', 'Expert'
+- Database Note: Park skis are tagged with appropriate skill levels (e.g., soft jib ski = 'Intermediate', stiff jump ski = 'Advanced' or 'Expert')
+- Query Contribution: Add to wishlist Attribute_IDs where Type='Skill_Level' and Value matches answer
+
+Question 2: Where do you plan to ski? (MULTI-SELECT - Core Question)
+- Provides: Multiple Attribute Tags (all selected options added to wishlist)
+- Attribute Type: Terrain
+- Example Values: 'All-Mountain', 'On-Piste', 'Powder', 'Park / Freestyle'
+- Special Handling: If "Park / Freestyle" is selected, also add Ski_Feature tags to wishlist:
+  - 'True Twin' (for pure park skis)
+  - 'Directional Twin' (for all-mountain/park hybrid skis)
+- Query Contribution: Add ALL selected terrain values to wishlist Attribute_IDs where Type='Terrain'
+- If park is selected: Also add Ski_Feature Attribute_IDs ('True Twin' and/or 'Directional Twin') to wishlist
+- Note: Waist_Width filtering is NOT applied here - terrain tags handle the filtering
+
+Question 3: Skiing Style
+- Provides: One or more Attribute Tags (added to wishlist)
+- Attribute Types: Flex_Profile AND Turn_Style
+- Flex_Profile Examples: 'Playful / Soft', 'Stiff / Damp'
+- Turn_Style Examples: 'Short & Quick', 'Long & Fast'
+- Query Contribution: Add to wishlist Attribute_IDs where Type IN ('Flex_Profile', 'Turn_Style') and Values match answer
+
+Question 4: Gender
+- Provides: One Direct Column filter (hard constraint)
+- Direct Column: Gender
+- Example Values: 'Men's/Unisex', 'Women's'
+- Query Contribution: WHERE clause filter: Tbl_Skis.Gender = answer value (must match exactly)
+
+Question 5: Budget
+- Provides: One Direct Column filter (hard constraint, optional)
+- Direct Column: MSRP
+- Query Contribution: WHERE clause filter: Tbl_Skis.MSRP <= maxPrice (or no filter if "No Preference")
+
 Future: Affiliate Expansion
 - Abstract recommendation entities: { id, title, category, specs, rationale, imageUrl, productUrls[] }.
 - Do not hard-code vendor logic. Implement provider adapters that can be swapped (e.g., `AffiliateProvider` interface).
 - Track outbound clicks only with explicit consent. Respect DNT and user preferences.
+
+Database Structure (Planned - Not Yet Implemented)
+- Relational, tag-based SQL system using three main tables:
+  1. `Tbl_Skis`: Main ski table with columns:
+     - Ski_ID (primary key)
+     - Brand
+     - Model
+     - Year
+     - Gender
+     - Waist_Width
+     - MSRP
+     - Image_URL
+  2. `Tbl_Attributes`: Master dictionary for all tags:
+     - Attribute_ID (primary key)
+     - Type (e.g., "Skill_Level", "Flex_Profile", "Terrain", "Turn_Style", "Ski_Feature")
+     - Value (e.g., "Beginner", "Stiff / Damp", "All-Mountain", "Short & Quick", "True Twin")
+     - Attribute Types and Values:
+       * Skill_Level: 'Beginner', 'Intermediate', 'Advanced', 'Expert' (applies to ALL ski types including park)
+       * Terrain: 'All-Mountain', 'On-Piste', 'Powder', 'Park / Freestyle'
+       * Flex_Profile: 'Playful / Soft', 'Stiff / Damp', 'Buttery / Jib', 'Stiff / Jumps'
+       * Turn_Style: 'Short & Quick', 'Long & Fast'
+       * Ski_Feature: 'True Twin' (pure park skis), 'Directional Twin' (all-mountain/park hybrid skis)
+  3. `Tbl_Ski_Attributes`: Join table for many-to-many relationship:
+     - Connects Ski_ID to Attribute_ID
+     - Allows single ski to have multiple tags (e.g., 'Advanced', 'Expert', 'Stiff', 'All-Mountain')
+
+Backend Architecture (Planned - Not Yet Implemented)
+- Node.js/Express API endpoint
+- Receives quiz answers from frontend (Question 2 terrain is an array of selected values)
+
+Backend Query Processing (Detailed):
+1. **Build Wishlist of Attribute_IDs**:
+   - Question 1 (Skill Level): Add Attribute_ID where Type='Skill_Level' and Value matches answer
+   - Question 2 (Terrain - MULTI-SELECT): For EACH selected terrain option, add Attribute_ID where Type='Terrain' and Value matches
+     - If "Park / Freestyle" is in selected array: Also add Attribute_IDs for Ski_Feature='True Twin' AND Ski_Feature='Directional Twin' (to match both pure park and hybrid skis)
+   - Question 3 (Skiing Style): Add Attribute_IDs where Type IN ('Flex_Profile', 'Turn_Style') and Values match answer
+   - Result: Wishlist is an array of Attribute_IDs that the user wants (e.g., [1, 5, 8, 12, 15, 20])
+
+2. **Build Numerical Filters**:
+   - Question 4 (Gender): Direct column filter on Tbl_Skis.Gender
+   - Question 5 (Budget): Direct column filter on Tbl_Skis.MSRP (or no filter if "No Preference")
+
+3. **SQL Query Structure** (Pseudocode):
+   ```sql
+   SELECT 
+     s.Ski_ID,
+     s.Brand,
+     s.Model,
+     s.Year,
+     s.Gender,
+     s.Waist_Width,
+     s.MSRP,
+     s.Image_URL,
+     COUNT(DISTINCT sa.Attribute_ID) AS Match_Score
+   FROM Tbl_Skis s
+   LEFT JOIN Tbl_Ski_Attributes sa ON s.Ski_ID = sa.Ski_ID
+   WHERE 
+     -- Hard constraints (must match)
+     s.Gender = :gender
+     AND (s.MSRP <= :maxPrice OR :maxPrice IS NULL)
+     -- Wishlist matching (count how many match)
+     AND sa.Attribute_ID IN (:wishlistAttributeIDs)
+   GROUP BY s.Ski_ID, s.Brand, s.Model, s.Year, s.Gender, s.Waist_Width, s.MSRP, s.Image_URL
+   HAVING COUNT(DISTINCT sa.Attribute_ID) > 0  -- At least one match
+   ORDER BY Match_Score DESC, s.MSRP ASC
+   LIMIT 10
+   ```
+
+4. **Match_Score Explanation**:
+   - Each ski gets a score = number of wishlist Attribute_IDs that match its tags
+   - Higher score = better match (more user preferences satisfied)
+   - Example: User selects ["All-Mountain", "Park / Freestyle"] + "Quick & Playful" + "Advanced"
+     - Wishlist might be: [Terrain='All-Mountain', Terrain='Park / Freestyle', Flex_Profile='Playful / Soft', Turn_Style='Short & Quick', Skill_Level='Advanced', Ski_Feature='True Twin', Ski_Feature='Directional Twin']
+     - A hybrid ski tagged with [All-Mountain, Park / Freestyle, Playful / Soft, Short & Quick, Advanced, Directional Twin] = Match_Score of 6
+     - A pure park ski tagged with [Park / Freestyle, Playful / Soft, Short & Quick, Advanced, True Twin] = Match_Score of 5
+
+5. **Hybrid Ski Support**:
+   - The multi-select Question 2 allows users to select combinations like "All-Mountain" AND "Park / Freestyle"
+   - The wishlist approach naturally handles this by including both terrain tags
+   - Skis tagged with both will score higher than skis tagged with only one
+   - Ski_Feature='Directional Twin' identifies all-mountain/park hybrids
+   - Ski_Feature='True Twin' identifies pure park skis
+
+6. **Important Notes**:
+   - Waist_Width is NOT filtered in the query (terrain tags handle the categorization)
+   - "Center Mount" is descriptive text only (not a database filter) - display in results for relevant park skis
+   - Skill Level works for ALL ski types (park skis are tagged with appropriate skill levels in database)
+   - Keep backend behind clean interfaces - frontend should work with stubbed/mock data until backend is ready
 
 Code Quality
 - TypeScript: Strong typing for quiz models, scoring, and recommendation outputs.

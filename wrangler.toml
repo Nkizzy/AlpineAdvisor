@@ -1,0 +1,8 @@
+name = "alpine-advisor"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "alpine-advisor-db"
+database_id = "4dc0b9cb-1c17-4fe6-a4cf-b02241e2c90a"
+
