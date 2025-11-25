@@ -60,7 +60,7 @@ const Index = () => {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/images/Landscape.JPG)", backgroundPosition: "center 60%" }}
+          style={{ backgroundImage: "url(/images/landscape.jpg)", backgroundPosition: "center 60%" }}
         >
           <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(255,255,255,0.3) 80%, hsl(var(--background)) 100%)" }} />
         </div>
