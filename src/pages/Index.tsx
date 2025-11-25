@@ -19,9 +19,6 @@ const Index = () => {
   
   // Get the hero image path - use direct absolute path for reliability
   const heroImagePath = '/images/Landscape.JPG';
-  
-  // Debug: log the path (remove in production if needed)
-  console.log('Hero image path:', heroImagePath);
 
   const features = [
     {
