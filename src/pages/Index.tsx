@@ -9,16 +9,11 @@ const Index = () => {
   const basePath = import.meta.env.BASE_URL || '/';
   
   // Helper to construct image paths for public assets
-  // Public assets in Vite are always served from root, regardless of basePath
   const imagePath = (path: string) => {
-    // Remove leading slash from path if present
+    // Remove leading slash from path if present, basePath already has trailing slash
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    // Always return absolute path from root for public assets
-    return `/${cleanPath}`;
+    return `${basePath}${cleanPath}`;
   };
-  
-  // Get the hero image path - use direct absolute path for reliability
-  const heroImagePath = '/images/Landscape.JPG';
 
   const features = [
     {
@@ -64,13 +59,8 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-gray-900"
-          style={{ 
-            backgroundImage: `url('${heroImagePath}')`, 
-            backgroundPosition: "center 60%",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover"
-          }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(/images/Landscape.JPG)", backgroundPosition: "center 60%" }}
         >
           <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(255,255,255,0.3) 80%, hsl(var(--background)) 100%)" }} />
         </div>
