@@ -6,14 +6,20 @@ import { Mountain, Award, Target, ArrowRight, CheckSquare, FileText, Sparkles } 
 const Index = () => {
   const navigate = useNavigate();
   // Get base path and ensure it's properly formatted
-  const basePath = import.meta.env.BASE_URL;
+  const basePath = import.meta.env.BASE_URL || '/';
   
-  // Helper to construct image paths
+  // Helper to construct image paths for public assets
   const imagePath = (path: string) => {
-    // Remove leading slash from path if present, basePath already has trailing slash
+    // Remove leading slash from path if present
     const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    return `${basePath}${cleanPath}`;
+    // For public assets in Vite, they're always served from root
+    // basePath is typically "/" for Cloudflare Pages
+    const normalizedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+    return `${normalizedBase}/${cleanPath}`;
   };
+  
+  // Get the hero image path
+  const heroImagePath = imagePath('images/Landscape.JPG');
 
   const features = [
     {
@@ -59,8 +65,16 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${imagePath('images/Landscape.JPG')})`, backgroundPosition: "center 60%" }}
+          className="absolute inset-0 bg-cover bg-center bg-gray-900"
+          style={{ 
+            backgroundImage: `url("${heroImagePath}")`, 
+            backgroundPosition: "center 60%",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover"
+          }}
+          onError={(e) => {
+            console.error('Hero image failed to load:', heroImagePath);
+          }}
         >
           <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(to bottom, transparent 0%, transparent 60%, rgba(255,255,255,0.3) 80%, hsl(var(--background)) 100%)" }} />
         </div>
