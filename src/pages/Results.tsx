@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Check, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 
 type QuizAnswers = {
   skillLevel: string;
@@ -59,6 +59,7 @@ const Results = () => {
   const [recommendations, setRecommendations] = useState<ReturnType<typeof transformRecommendation>[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (!answers) {
@@ -109,6 +110,18 @@ const Results = () => {
 
     fetchRecommendations();
   }, [answers, navigate]);
+
+  const toggleCard = (index: number) => {
+    setExpandedCards((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
 
   if (!answers) {
     return null;
@@ -174,62 +187,85 @@ const Results = () => {
         )}
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {recommendations.map((rec, index) => (
-            <Card
-              key={index}
-              className="p-6 shadow-medium hover:shadow-soft transition-all animate-slide-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <Badge className="mb-2 bg-gradient-accent">{rec.category}</Badge>
-                  <h3 className="text-2xl font-bold text-foreground">{rec.name}</h3>
-                </div>
-                <div className="text-right ml-4">
-                  <div className="text-2xl font-bold text-primary">{rec.price}</div>
-                  <div className="text-sm text-muted-foreground flex items-center gap-1">
-                    <span className="font-semibold text-accent">{rec.match}%</span> match
+          {recommendations.map((rec, index) => {
+            const isExpanded = expandedCards.has(index);
+            return (
+              <Card
+                key={index}
+                className="p-6 shadow-medium hover:shadow-soft transition-all animate-slide-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-foreground">{rec.name}</h3>
+                  </div>
+                  <div className="text-right ml-4">
+                    <div className="text-2xl font-bold text-primary">{rec.price}</div>
+                    <div className="text-sm text-muted-foreground flex items-center gap-1">
+                      <span className="font-semibold text-accent">{rec.match}%</span> match
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              {rec.imageUrl && (
-                <div className="mb-4">
-                  <img 
-                    src={rec.imageUrl} 
-                    alt={rec.name}
-                    className="w-full h-48 object-cover rounded-lg"
-                    onError={(e) => {
-                      // Hide image if it fails to load
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-              )}
+                
+                {isExpanded && (
+                  <>
+                    <div className="flex items-center mb-4">
+                      <Badge className="bg-gradient-accent">{rec.category}</Badge>
+                    </div>
 
-              <div className="space-y-2 mb-4">
-                {rec.features.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{feature}</span>
-                  </div>
-                ))}
-              </div>
+                    {rec.imageUrl && (
+                      <div className="mb-4">
+                        <img 
+                          src={rec.imageUrl} 
+                          alt={rec.name}
+                          className="w-full h-48 object-cover rounded-lg"
+                          onError={(e) => {
+                            // Hide image if it fails to load
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
 
-              {rec.rationale && (
-                <div className="mb-6 p-4 bg-accent/5 rounded-lg border border-accent/20">
-                  <p className="text-sm text-foreground leading-relaxed">
-                    <span className="font-semibold">Why this works for you: </span>
-                    {rec.rationale}
-                  </p>
-                </div>
-              )}
+                    <div className="space-y-2 mb-4">
+                      {rec.features.map((feature, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
 
-              <Button className="w-full bg-gradient-hero">
-                View Details
-              </Button>
-            </Card>
-          ))}
+                    {rec.rationale && (
+                      <div className="mb-6 p-4 bg-accent/5 rounded-lg border border-accent/20">
+                        <p className="text-sm text-foreground leading-relaxed">
+                          <span className="font-semibold">Why this works for you: </span>
+                          {rec.rationale}
+                        </p>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                <Button 
+                  className="w-full bg-gradient-hero"
+                  onClick={() => toggleCard(index)}
+                >
+                  {isExpanded ? (
+                    <>
+                      Hide Details
+                      <ChevronUp className="ml-2 h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      Show Details
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </Card>
+            );
+          })}
         </div>
 
         <Card className="p-8 bg-card text-center">

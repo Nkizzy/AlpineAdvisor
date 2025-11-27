@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:full": "wrangler pages dev dist --compatibility-date=2024-01-01 --d1=DB=alpine-advisor-db",
-    "dev:build": "vite build && wrangler pages dev dist --compatibility-date=2024-01-01 --d1=DB=alpine-advisor-db",
+    "dev:full": "npx wrangler pages dev dist --compatibility-date=2024-01-01 --d1=DB=alpine-advisor-db",
+    "dev:build": "vite build && npx wrangler pages dev dist --compatibility-date=2024-01-01 --d1=DB=alpine-advisor-db",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
