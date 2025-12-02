@@ -25,8 +25,64 @@ interface SkiRecommendation {
   Match_Score: number;
 }
 
+// Generate dynamic description based on ski properties and user preferences
+const generateRationale = (ski: SkiRecommendation, answers: QuizAnswers): string => {
+  const parts: string[] = [];
+  const waistWidth = ski.Waist_Width;
+  const terrain = answers.terrain || [];
+  const skiingStyle = answers.skiingStyle;
+  const isPark = terrain.includes('park');
+  
+  // Waist width descriptions
+  if (waistWidth < 80) {
+    parts.push(`The narrow ${waistWidth}mm waist creates powerful edge grip, allowing you to carve tight, precise turns on groomed runs.`);
+  } else if (waistWidth >= 100) {
+    parts.push(`The wide ${waistWidth}mm base provides exceptional float, allowing the ski to stay on top of deep snow rather than sinking in.`);
+  } else if (waistWidth >= 85 && waistWidth < 100) {
+    parts.push(`The ${waistWidth}mm waist strikes an ideal balance, providing enough width for off-piste float while maintaining on-piste performance.`);
+  }
+  
+  // Terrain-based descriptions
+  if (terrain.includes('on-piste') || terrain.includes('all-mountain')) {
+    if (waistWidth < 90 && skiingStyle === 'powerful-fast') {
+      parts.push(`The stiff flex profile returns energy back into the ski, giving you maximum power and stability through hard turns.`);
+    }
+  }
+  
+  if (terrain.includes('powder')) {
+    if (waistWidth >= 90) {
+      parts.push(`The wide platform and soft flex allow the ski to pivot easily in deep snow, making it effortless to navigate through powder.`);
+    }
+  }
+  
+  if (isPark) {
+    if (skiingStyle === 'quick-playful') {
+      parts.push(`The soft, playful flex creates a forgiving ski that's perfect for jibbing and smooth landings.`);
+      parts.push(`The buttery construction absorbs impacts and provides a poppy feel, reducing fatigue during long park sessions.`);
+    } else if (skiingStyle === 'powerful-fast') {
+      parts.push(`The stiff flex profile provides stability and pop for big air, giving you confidence on large jumps.`);
+    }
+  }
+  
+  // Style-based descriptions
+  if (skiingStyle === 'powerful-fast' && !isPark) {
+    parts.push(`Built for speed and power, this ski maintains composure at high velocities and rewards aggressive, committed skiing.`);
+  } else if (skiingStyle === 'quick-playful' && !isPark) {
+    parts.push(`The playful nature makes this ski incredibly fun and easy to flick around, perfect for quick, snappy turns.`);
+  } else if (skiingStyle === 'easy-forgiving') {
+    parts.push(`The forgiving flex profile makes this ski approachable and easy to control, helping you build confidence and improve your technique.`);
+  }
+  
+  // Fallback if no specific descriptions were generated
+  if (parts.length === 0) {
+    parts.push(`This ski matches ${ski.Match_Score} of your preferences, making it a great fit for your skiing style.`);
+  }
+  
+  return parts.join(' ');
+};
+
 // Transform API response to display format
-const transformRecommendation = (ski: SkiRecommendation) => {
+const transformRecommendation = (ski: SkiRecommendation, answers: QuizAnswers) => {
   const features: string[] = [];
   
   // Add waist width
@@ -47,8 +103,8 @@ const transformRecommendation = (ski: SkiRecommendation) => {
     price: `$${ski.MSRP.toFixed(2)}`,
     features,
     match: Math.min(100, Math.round((ski.Match_Score / 7) * 100)), // Scale match score to percentage
-    imageUrl: ski.Image_URL,
-    rationale: `This ski matches ${ski.Match_Score} of your preferences, making it a great fit for your skiing style.`,
+    imageUrl: "/images/exampleski.webp",
+    rationale: generateRationale(ski, answers),
   };
 };
 
@@ -97,7 +153,9 @@ const Results = () => {
           return;
         }
         
-        const transformed = (data.recommendations || []).map(transformRecommendation);
+        const transformed = (data.recommendations || []).map((ski: SkiRecommendation) => 
+          transformRecommendation(ski, answers)
+        );
         setRecommendations(transformed);
       } catch (err) {
         console.error('Error fetching recommendations:', err);
