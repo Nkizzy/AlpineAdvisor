@@ -276,10 +276,11 @@ const Results = () => {
                         <img 
                           src={rec.imageUrl} 
                           alt={rec.name}
-                          className="w-full h-48 object-cover rounded-lg"
+                          className="w-full h-48 object-cover rounded-lg bg-muted"
                           onError={(e) => {
-                            // Hide image if it fails to load
-                            (e.target as HTMLImageElement).style.display = 'none';
+                            console.error('Image failed to load:', rec.imageUrl);
+                            // Show placeholder instead of hiding
+                            (e.target as HTMLImageElement).src = '/placeholder.svg';
                           }}
                         />
                       </div>
